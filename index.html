@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دانيل للخدمات اللوجستية لحجز المركبات</title>
+    <!-- تضمين المكتبات الخارجية بشكل صحيح لضمان العمل في VS Code -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.image2url.com/r2/default/images/1777177733837-b480858e-2cda-4ecc-9013-da2abd6b671a.webp');
+            background-size: cover;
+            background-position: center;
+        }
+        .car-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .car-card:hover {
+            transform: translateY(-10px);
+        }
+        .price-tag {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+        /* تنسيق شريط التمرير داخل النافذة المنبثقة */
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 10px;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden text-right">
+
+
+    <!-- القائمة العلوية -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
+            <!-- الشعار -->
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg font-bold">
+<img src="https://www.image2url.com/r2/default/images/1777174450729-98867b78-9567-4364-91a6-a01eade62496.jpeg" alt="">
+
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="text-xl md:text-2xl font-bold text-blue-900 tracking-tighter">Daniel</span>
+                    <span class="text-[10px] md:text-sm font-bold text-blue-600 tracking-widest uppercase">Logistic</span>
+                </div>
+            </div>
+
+            <!-- روابط التنقل -->
+            <div class="hidden md:flex items-center gap-8 font-bold text-gray-700">
+                <a href="#home" class="hover:text-blue-600 transition">الرئيسية</a>
+                <a href="#about" class="hover:text-blue-600 transition">عن خدماتنا</a>
+                <a href="#fleet" class="hover:text-blue-600 transition">الأسطول والأسعار</a>
+                
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="#contact" class="hidden sm:block bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow-md font-bold">
+                    احجز الآن
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- قسم الترحيب -->
+    <header id="home" class="hero-bg h-[600px] flex items-center text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Daniel Logistic لنقل البضائع</h1>
+            <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto">شريكك الموثوق في الحلول اللوجستية والنقل الثقيل والخفيف في جميع أنحاء المملكة  بأسعار تنافسية.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#fleet" class="bg-white text-blue-900 px-10 py-4 rounded-xl font-bold hover:bg-blue-50 transition shadow-xl">استكشف الأسطول</a>
+                <a href="#about" class="bg-blue-600 text-white px-10 py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-xl">تعرف على خدماتنا</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- قسم عن خدماتنا -->
+    <section id="about" class="py-20 bg-white text-right">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <h2 class="text-4xl font-bold text-blue-900 mb-6">لماذا تختار Daniel Logistic؟</h2>
+                    <p class="text-gray-600 mb-8 leading-loose text-lg">نحن نقدم حلول نقل متكاملة تعتمد على السرعة والأمان. سواء كنت تنقل أثاث منزلك، أو بضائع مصنعك، أو شحنات مبردة، فنحن نمتلك الخبرة والأسطول المناسب لخدمتك بأسعار شفافة.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-blue-100 p-3 rounded-lg text-blue-600"><i class="fas fa-shield-alt text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">أمان تام</h4>
+                                <p class="text-sm text-gray-500">نضمن سلامة شحنتك من الباب للباب.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-green-100 p-3 rounded-lg text-green-600"><i class="fas fa-clock text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">التزام بالمواعيد</h4>
+                                <p class="text-sm text-gray-500">دقة متناهية في مواعيد الاستلام والتسليم.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-orange-100 p-3 rounded-lg text-orange-600"><i class="fas fa-tag text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">أسعار تنافسية</h4>
+                                <p class="text-sm text-gray-500">أفضل جودة مقابل أقل سعر في السوق.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-purple-100 p-3 rounded-lg text-purple-600"><i class="fas fa-headset text-xl"></i></div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">دعم 24/7</h4>
+                                <p class="text-sm text-gray-500">فريق خدمة عملاء جاهز للرد على استفساراتكم.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" alt="[خدمات النقل اللوجستي]" class="rounded-3xl shadow-2xl">
+                        <div class="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-2xl shadow-xl hidden md:block">
+                            <span class="text-4xl font-bold">+10</span>
+                            <p>سنوات من الخبرة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الأسطول -->
+    <section id="fleet" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">أسطولنا المتاح وأسعارنا التقديرية</h2>
+                <p class="text-gray-600">الأسعار تعتمد على المسافة ونوع الحمولة - تواصل معنا لعرض سعر دقيق</p>
+                <div class="h-1 w-20 bg-blue-600 mx-auto mt-4"></div>
+            </div>
+
+            <div id="fleetGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- يتم حقن البيانات هنا بواسطة JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- النافذة المنبثقة لتفاصيل السيارة -->
+    <div id="carModal" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-5xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col relative">
+            <!-- زر الإغلاق -->
+            <button onclick="closeModal()" class="absolute top-4 left-4 z-50 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl backdrop-blur-md transition">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="flex flex-col lg:flex-row h-full overflow-y-auto modal-content">
+                <!-- معرض الصور -->
+                <div class="lg:w-2/3 bg-black flex flex-col">
+                    <div id="mainModalImageContainer" class="flex-grow flex items-center justify-center bg-gray-900 min-h-[300px]">
+                        <img id="mainModalImage" src="" class="max-w-full max-h-full object-contain" alt="[صورة الشاحنة]">
+                    </div>
+                    <div id="modalThumbnails" class="flex gap-2 p-4 bg-gray-800 overflow-x-auto">
+                        <!-- الصور المصغرة تحقن هنا -->
+                    </div>
+                </div>
+                
+                <!-- المعلومات -->
+                <div class="lg:w-1/3 p-8 flex flex-col text-right">
+                    <div class="flex justify-between items-center mb-4">
+                        <span id="modalPrice" class="text-green-600 font-bold text-xl"></span>
+                        <h3 id="modalCarTitle" class="text-2xl font-bold text-blue-900"></h3>
+                    </div>
+                    <div id="modalCarSpecs" class="space-y-4 mb-8">
+                        <!-- المواصفات تحقن هنا -->
+                    </div>
+                    <div class="mt-auto space-y-3">
+                        <button id="modalWaBtn" class="w-full bg-green-500 text-white py-4 rounded-xl font-bold hover:bg-green-600 transition flex items-center justify-center gap-2">
+                            <i class="fab fa-whatsapp"></i> حجز عبر واتساب
+                        </button>
+                        <button onclick="closeModal(); document.getElementById('contact').scrollIntoView();" class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-200 transition">
+                            طلب عرض سعر مخصص
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم الحجز المباشر -->
+    <section id="contact" class="py-20 bg-blue-900 text-white">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="bg-white text-gray-900 p-8 md:p-12 rounded-3xl shadow-2xl border-t-8 border-green-500">
+                <h3 class="text-3xl font-bold mb-2 text-center text-blue-900">نموذج الحجز المباشر</h3>
+                <p class="text-center text-gray-500 mb-8">سيتم تحويلك للواتساب لإرسال بيانات الحجز فوراً</p>
+                
+                <form id="bookingForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label class="mb-2 text-sm font-bold text-gray-700 text-right">الاسم الكامل</label>
+                        <input id="userName" type="text" placeholder="مثلاً: محمد أحمد" class="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none text-right" required>
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="mb-2 text-sm font-bold text-gray-700 text-right">رقم الهاتف</label>
+                        <input id="userPhone" type="tel" placeholder="01xxxxxxxxx" class="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none text-right" required>
+                    </div>
+                    <div class="flex flex-col md:col-span-2">
+                        <label class="mb-2 text-sm font-bold text-gray-700 text-right">نوع الشاحنة المطلوبة</label>
+                        <select id="carType" class="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none text-right">
+                            <option value="غير محدد">اختر نوع السيارة</option>
+                            <option value="سيارة دبابة">سيارة تويوتا لايت اس موديل 2024</option>
+                            <option value="شاحنة جامبو">سيارة  تويوتا هايس ديزل جاف</option>
+                            <option value="سيارة ثلاجة">سيارة تويوتا لايت اس تبريد موديل 2023</option>
+                            <option value="تريلا مكشوفة">سيارة تويوتا بنزين موديل  2017</option>
+                            <option value="سيارة دبابة">سيارة رينو دوكر موديل 2022</option>
+                            <option value="شاحنة جامبو"> سيارة نيسان موديل 2021</option>
+                            <option value="سيارة دبابة">سيارة تويوتا هايس ديزل تبريد</option>
+                            <option value="شاحنة جامبو"> سيارة إيكو موديل 2024</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col md:col-span-2">
+                        <label class="mb-2 text-sm font-bold text-gray-700 text-right">وصف الحمولة والوجهة</label>
+                        <textarea id="details" placeholder="اكتب تفاصيل الشحنة ومن أين إلى أين..." class="p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 outline-none h-32 text-right"></textarea>
+                    </div>
+                    <button type="button" onclick="submitToWhatsapp()" class="md:col-span-2 bg-green-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-600 transition shadow-lg flex items-center justify-center gap-3">
+                        <i class="fab fa-whatsapp text-2xl"></i>
+                        تأكيد الحجز عبر واتساب
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- التذييل -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <span class="text-white text-2xl font-bold">Daniel <span class="text-blue-600">Logistic</span></span>
+            <p class="mt-4 mb-8">Daniellogistics@outlook.sa | +9660550428519</p>
+            <p class="mt-4 text-gray-500">الرياض مخرج 17 حي الفيصلية عبدالله الفقيه</p>
+            <div class="flex justify-center space-x-reverse space-x-6 text-xl mb-8">
+                <a href="https://wa.me/+9660550428519" class="hover:text-green-500"><i class="fab fa-whatsapp"></i></a>
+                
+            </div>
+            <p class="text-xs border-t border-gray-800 pt-8">&copy; 2026 Daniel Logistic - جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            const WHATSAPP_NUMBER = "+9660550428519"; 
+
+            // مصفوفة بيانات السيارات المحدثة بـ 8 سيارات مع الأسعار
+            const fleetData = [
+                {
+                    id: 1,
+                    title: "سيارة تويوتا لايت اس موديل 2024",
+                    price: "2800 ر.س شهريا",
+                    description: "الخيار الأمثل للنقل الداخلي السريع والأوزان الخفيفة.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777155432676-0aa7b462-7d20-4891-a8bc-78774a88412d.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777155505468-f56eabed-3946-4568-8491-fc8a47d45a49.jpeg"
+                    ],
+                    specs: ["شحن اسرع", "الطول: 3 متر", "الاستخدام: بضائع خفيفة"]
+                },
+                {
+                    id: 2,
+                    title: "سيارة تويوتا هايس ديزل جاف",
+                    price: "4400 ر.س شهريا",
+
+                    description: " للحمولات المتوسطة.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777154899804-8a3d8e9a-5ba8-45dc-951a-13d89c5d652b.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777154935530-fd98a550-8f12-4894-bbdf-9e2dcaf5d8e1.jpeg"
+                    ],
+                    specs: [": .", "الطول: 5 متر", "الاستخدام: أجهزة كهربائية،  "]
+                },
+                {
+                    id: 3,
+                    title: "سيارة تويوتا لايت اس تبريد موديل 2023",
+                    price: "3700 ر.س شهريا",
+                    description: "مجهزة بأنظمة تبريد حديثة لضمان سلامة المواد الغذائية.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777154710577-971dc973-4945-4714-a37b-cfa7f717ff06.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777154671923-2cf39364-b768-48dc-b9dd-2f63ef7bc756.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777154758454-6e70e68b-3be7-4dc2-a528-5828fb97b644.jpeg"
+                    ],
+                    specs: ["التبريد: حتى -20 درجة", "", "الاستخدام: لحوم، أدوية، مجمدات"]
+                },
+                {
+                    id: 4,
+                    title: "سيارة تويوتا بنزين موديل  2017",
+                    price: "4200 ر.س شهريا",
+
+                    description: "للأوزان الثقيلة والمقاسات غير التقليدية والمعدات.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777155366461-4aa1f67a-c700-403f-a97f-959b9907c20f.jpeg"
+                    ],
+                    specs: [  "الاستخدام:     نقل المعدات اخفيفة و الاثاث الخفيف"]
+                },
+                {
+                    id: 5,
+                    title: "سيارة رينو دوكر موديل 2022",
+                    price: "2200 ر.س شهريا",
+
+                    description: "مثالية لتوصيل الطلبات السريعة داخل المدن المزدحمة.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777155273740-1339cb02-bd6c-45ca-af45-b5e31cf4381d.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777155038396-83f66384-0547-429b-ab64-babca112aaf6.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777155010359-2a5ca91b-eb3d-4b19-b73e-9d036b21df28.jpeg"
+                    ],
+                    specs: ["الحمولة: 750 كجم", "الحجم: صغير", "الاستخدام: طرود، أدوات منزلية"]
+                },
+                {
+                    id: 6,
+                    title: "سيارة نيسان موديل 2021",
+                    price: "3800 ر.س شهريا",
+
+                    description: "حماية قصوى للبضائع من العوامل الجوية والأتربة.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777155567897-319656f2-13ae-4a28-b7ae-7d7bcb95242d.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777155597604-0708ed8e-ac0c-48fc-b162-d4052185d89f.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777155648194-a3aa8688-6a3f-4ad1-a2f0-dee19877f49c.jpeg"
+                    ],
+                    specs: [, "النوع: صندوق مغلق", "الاستخدام: ملابس، منسوجات، ورق"]
+                },
+                {
+                    id: 7,
+                    title: "سيارة تويوتا هايس ديزل تبريد",
+                    price: "5500 ر.س شهريا",
+
+                    description: "مجهزة بأنظمة تبريد حديثة لضمان سلامة المواد الغذائية.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777154515720-3583dcce-0772-4719-a7cf-396998e6256b.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777154479727-f495c2af-3ef3-4ed7-8ed5-2fbd8c7cbbfb.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777154610906-6cbb977f-d6be-4431-8c38-c9f5da7dc382.jpeg"
+                    ],
+                    specs: ["الاستخدام: لحوم، أدوية، مجمدات التبريد"]
+                },
+                {
+                    id: 8,
+                    title: "سيارة إيكو موديل 2024",
+                    price: "2000ي ر.س شهريا",
+
+                    description: "سهولة في التحميل والتفريغ من الجوانب بمرونة عالية.",
+                    images: [
+                        "https://www.image2url.com/r2/default/images/1777171892347-5bd531de-18f6-4284-9cbb-ab75d376e8cf.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777171943081-699fe3bf-79a1-4f65-bd41-bf8c132a29a2.jpeg",
+                        "https://www.image2url.com/r2/default/images/1777171915882-3e39a9c3-b926-46ac-a720-497aa10d60a6.jpeg"
+                    ],
+                    specs: [": طروض او هديا و بضائع صغيرة ", "النوع: ستارة جانبية", "الاستخدام: بضائع منصات (Pallets)"]
+                }
+            ];
+
+            const grid = document.getElementById('fleetGrid');
+            
+            fleetData.forEach(car => {
+                const card = document.createElement('div');
+                card.className = "car-card bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col border border-gray-100";
+                card.onclick = () => openModal(car.id);
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${car.images[0]}" class="w-full h-48 object-cover" alt="${car.title}">
+                        <div class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                            يبدأ من ${car.price}
+                        </div>
+                    </div>
+                    <div class="p-5 flex-grow text-right">
+                        <h3 class="font-bold text-xl mb-1 text-blue-900">${car.title}</h3>
+                        <p class="text-gray-500 text-sm mb-4 line-clamp-2">${car.description}</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="price-tag">عرض التفاصيل</span>
+                            <div class="text-blue-600 font-bold text-sm flex items-center gap-1">
+                                <i class="fas fa-arrow-left text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            window.openModal = function(carId) {
+                const car = fleetData.find(c => c.id === carId);
+                const modal = document.getElementById('carModal');
+                
+                document.getElementById('modalCarTitle').innerText = car.title;
+                document.getElementById('modalPrice').innerText = `تبدأ من ${car.price}`;
+                document.getElementById('mainModalImage').src = car.images[0];
+                
+                const specsContainer = document.getElementById('modalCarSpecs');
+                specsContainer.innerHTML = car.specs.map(s => `
+                    <div class="flex items-center justify-end gap-3 text-gray-700">
+                        <span>${s}</span>
+                        <i class="fas fa-check-circle text-blue-500"></i>
+                    </div>
+                `).join('');
+                
+                const thumbsContainer = document.getElementById('modalThumbnails');
+                thumbsContainer.innerHTML = car.images.map((img, idx) => `
+                    <img src="${img}" onclick="event.stopPropagation(); updateMainImage('${img}')" class="w-20 h-16 object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-blue-500 transition shadow-md">
+                `).join('');
+                
+                document.getElementById('modalWaBtn').onclick = () => {
+                    const msg = `مرحباً Daniel Logistic، أريد الاستفسار عن حجز ${car.title} (السعر التقديري: ${car.price}).`;
+                    window.open(`https://wa.me/${+9660550428519}?text=${encodeURIComponent(msg)}`, '_blank');
+                };
+
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            window.updateMainImage = function(src) {
+                document.getElementById('mainModalImage').src = src;
+            }
+
+            window.closeModal = function() {
+                document.getElementById('carModal').classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+
+            window.submitToWhatsapp = function() {
+                const name = document.getElementById('userName').value;
+                const phone = document.getElementById('userPhone').value;
+                const car = document.getElementById('carType').value;
+                const details = document.getElementById('details').value;
+
+                if(!name || !phone) {
+                    alert("يرجى كتابة الاسم ورقم الهاتف");
+                    return;
+                }
+
+                const message = `*طلب حجز جديد - Daniel Logistic*\n\n` +
+                                `*الاسم:* ${name}\n` +
+                                `*الهاتف:* ${phone}\n` +
+                                `*السيارة:* ${car}\n` +
+                                `*التفاصيل:* ${details}`;
+
+                window.open(`https://wa.me/${+9660550428519}?text=${encodeURIComponent(message)}`, '_blank');
+            }
+
+            window.onclick = function(event) {
+                const modal = document.getElementById('carModal');
+                if (event.target == modal) closeModal();
+            }
+        };
+    </script>
+</body>
+</html>
